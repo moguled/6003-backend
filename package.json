@@ -1,0 +1,20 @@
+{
+  "name": "6003-backend",
+  "version": "1.0.0",
+  "description": "backend api project",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.coventry.ac.uk/guledm2/6003-backend.git"
+  },
+  "author": "Mohammed Guled",
+  "license": "ISC",
+  "dependencies": {
+    "koa": "^2.13.1",
+    "koa-bodyparser": "^4.3.0",
+    "koa-router": "^10.0.0"
+  }
+}
