@@ -1,7 +1,8 @@
 const express = require('express');
 const User = require('../models/users');
 const bcrypt = require('bcrypt'); //module that encypts the password.
-const asyncHandler = require('express-async-handler') //Stops errors crashing the whole process. Works as error-handling.
+const jwt = require('jsonwebtoken');
+const asyncHandler = require('express-async-handler'); //Stops errors crashing the whole process. Works as error-handling.
 
 
 //Registering new user to database
@@ -16,9 +17,23 @@ const addUser = asyncHandler(async (req, res) => {
   const UserDuplicate = await User.findOne({ email });
 
   if (UserDuplicate){
-    res.status(404);
-    throw new Error("Email is already in use by another account");
+    //returns an error message if that email is already in use.
+    return res.status(400).json({"errmsg": "Email is already in use by another account" });
   }
+  
+  if (email==""){
+    return res.status(400).json({"errmsg": "Email is empty" });
+  }
+                             
+  if (name==""){
+    return res.status(400).json({"errmsg": "Name is empty" });
+  }
+  
+  if (password==""){
+    return res.status(400).json({"errmsg": "Password is empty" });
+  }
+  
+   
 
   //Hashes the password before user is created.
   password  = bcrypt.hashSync(password, 10);
@@ -33,31 +48,67 @@ const addUser = asyncHandler(async (req, res) => {
       email: user.email,
       name: user.name,
       role: user.role,
+      errmsg: "Registration has been successful",
     });
   } else { //if error occurs.
-    res.status(400);
-    throw new Error("Unable to find registered user."); //error message
+    return res.status(404).json({"errmsg": "Unable to find registered user." }); //error message
   }
 });
 
-
+//Checks the inputted email and password against database.
 const LoginUser = asyncHandler(async (req,res) => {
   const {email, password} = req.body;
   
   const user = await User.findOne({ email });
   
   if (user && (await user.checkPassword(password))){
+    //jwt token signing
+    const payload = {id: user._id, name: user.name, role:user.role}
+    // token will carry payload which contains user information.
+    const jwttoken = jwt.sign(payload, process.env.TOKEN_SECRET, {expiresIn:"1d"})
     res.json({ 
       _id: user._id,
       email: user.email,
       name: user.name,
       role: user.role,
+      jwttoken,
     });
-  }else{
-    res.status(401);
-    throw new Error("Incorrect Credentials");
+    
+  }else{ 
+    return res.status(400).json({"errmsg": "Login has failed" })
+    //res.status(401);
+    //throw new Error("Incorrect Credentials");
   }
 });
 
+// Verifies the JWT token returned by login in the header Authorisation. Returns boolean values.
+const verifyToken = asyncHandler( async(req,res)=>{
+  try{
+    const currenttoken = req.header("Authorisation")
+    
+    //checks if there is a token.
+    if (!currenttoken){
+      return res.send(false)
+    }
+    
+    //checks the token against the secret token
+    jwt.verify(currenttoken, process.env.TOKEN_SECRET, async(err, verified)=>{
+      if(err){
+        return res.send(false)
+      }
+      const user = await User.findById(verified.id)
+      if(!user){
+        return res.send(false)
+      }
+      //returns a boolean
+      return res.send(true)
+    })
+  }
+  catch{
+    return res.status(500).json({msg: "Authentication failed"}) //error message
+  }
+})
 
-module.exports = {addUser,LoginUser};
+
+
+module.exports = {addUser,LoginUser,verifyToken};

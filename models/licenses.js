@@ -1,7 +1,6 @@
 const mongoose = require("mongoose");
 
 const LicenseSchema = mongoose.Schema({
-
       companyname: {
         type: String,
         required: true,
@@ -11,11 +10,23 @@ const LicenseSchema = mongoose.Schema({
         type: String,
         required: true,
       },
-      address: {
+      status: {
         type: String,
+        enum: ['pending','accepted','rejected'],
+        default: 'pending',
+        required: true,
       },
-      telephone: {
+      details: {
         type: String,
+        required: true,
+      },
+      user_id: {
+        type: String,
+        required: true,
+      },
+      name:{
+        type: String,
+        required: true,
       }
 });
 
