@@ -12,8 +12,8 @@ const LicenseSchema = mongoose.Schema({
       },
       status: {
         type: String,
-        enum: ['pending','accepted','rejected'],
-        default: 'pending',
+        enum: ['new','pending','accepted','rejected'],
+        default: 'new',
         required: true,
       },
       details: {

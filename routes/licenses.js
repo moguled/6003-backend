@@ -9,6 +9,9 @@ router.route("/")
   .get(authenticate, LicensesCtrl. getLicenses)
   .post(authenticate, LicensesCtrl.addLicenses)
 
+router.route("/update")
+  .post(authenticate, LicensesCtrl.updateLicenses)
+
 
 
 
