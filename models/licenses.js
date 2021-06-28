@@ -10,6 +10,10 @@ const LicenseSchema = mongoose.Schema({
         type: String,
         required: true,
       },
+      address: {
+        type: String,
+        required: true,
+      },
       status: {
         type: String,
         enum: ['new','pending','accepted','rejected'],

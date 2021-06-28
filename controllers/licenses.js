@@ -23,8 +23,9 @@ const LicensesCtrl = {
   //function to create new license applications.
   addLicenses: asyncHandler(async (req,res) => {
     try{
-      const {companyname, companytype, details, status} = req.body;
+      const  {companyname, companytype, details, address, status} = req.body;
       const LicenseDuplicate = await Licenses.findOne({ companyname });
+      
 
       if (LicenseDuplicate){
         //returns an error message if that email is already in use.
@@ -34,6 +35,7 @@ const LicensesCtrl = {
       const newLicense = new Licenses({
         companyname,
         companytype,
+        address,
         status,
         details,
         user_id: req.user.id,
@@ -42,29 +44,29 @@ const LicensesCtrl = {
       await newLicense.save();
       res.status(201).json({ //if successful         
       errmsg: "License application is complete.",
+        
     });
       
        //send email to administrator to alert that a new application has been 
       //received
       
-         sgMail.setApiKey(process.env.SENDGRID_API_KEY);
-      
-          const msg = {
-            to: 'mguled99@hotmail.co.uk', // Change to your recipient
-            from: 'guled.coding@gmail.com', // Change to your verified sender
-            subject: 'New License application received',
-            text: companyname + 'has sent in an application',
-            html: '<strong> {companyname} has sent in an application </strong>',
-          }
-          sgMail
-            .send(msg)
-            .then(() => {
-              console.log('Email sent')
-            })
-            .catch((error) => {
-              console.error(error)
-            });
-                               
+       sgMail.setApiKey(process.env.SENDGRID_API_KEY);
+        const msg = {
+          to: 'mguled99@hotmail.co.uk', // Change to your recipient
+          from: 'guled.coding@gmail.com', // Change to your verified sender
+          subject: 'New License application received',
+         // text:  + 'has sent in an application',
+          html:   '<p> A new application has been in by </p>' +  '<strong>' + newLicense['companyname']  +  ' </strong>' + '<p> Please review this application ASAP </p>',
+        }
+        sgMail
+          .send(msg)
+          .then(() => {
+            console.log('Email sent')
+          })
+          .catch((error) => {
+            console.error(error)
+          });
+
     }
     catch(err){
       return res.status(400).json({"errmsg": err.message });

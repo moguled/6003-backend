@@ -1,0 +1,128 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "definitions": {
+    
+    "user":{
+      "$id": "#user",
+      "title": "User",
+      "description": "Data to register new user",
+      "type": "object",
+      "properties":{
+        "email": {
+          "description": "unique email address",
+          "type": "String"
+        },
+        "password": {
+          "description": "password for the user",
+          "type": "String"
+        },
+        "name": {
+          "description": "users name",
+          "type": "String"
+        },
+        "role": {
+          "description": "users role. defaults to regular user.",
+          "type": "String"
+        }
+      },
+      "required": ["email", "password", "name", "role" ]
+    },
+    
+    "userregister":{
+      "$id": "#userregister",
+      "title": "User Registered",
+      "description": "Confirmation after user is registered",
+      "type": "object",
+      "properties":{
+        "-id":{
+          "description": "unique for this specific user",
+          "type": "String"
+        },
+        "email": {
+          "description": "unique email address",
+          "type": "String"
+        },
+        "name": {
+          "description": "users name",
+          "type": "String"
+        },
+        "role": {
+          "description": "users role. defaults to regular user.",
+          "enum": ['user','admin'],
+          "default": "user",
+          "type": "String"
+        },
+        "errmsg":{
+          "description": "success message",
+          "type": "String"
+        }
+      },
+    },
+     
+    "usersignin":{
+      "$id": "#usersignin",
+      "title": "User Sign In",
+      "description": "Data to sign in user",
+      "type": "object",
+      "properties":{
+        "email": {
+          "description": "unique email address",
+          "type": "String"
+        },
+        "password": {
+          "description": "password for the user",
+          "type": "String"
+        }
+      },
+      "required": ["email", "password"]
+    },
+    
+    "usersigninconfirm":{
+      "$id": "#usersigninconfirm",
+      "title": "User Sign In Confirmation",
+      "description": "Confirmation that user is signed in",
+      "type": "object",
+      "properties":{
+         "-id":{
+          "description": "unique for this specific user",
+          "type": "String"
+        },
+        "email": {
+          "description": "unique email address",
+          "type": "String"
+        },
+        "name": {
+          "description": "users name",
+          "type": "String"
+        },
+        "role": {
+          "description": "users role. defaults to regular user.",
+          "enum": ['user','admin'],
+          "default": "user",
+          "type": "String"
+        },
+        "jwttoken": {
+          "description": "jwt token created when user logs in",
+          "type": "String"
+        }
+      },
+      "required": ["email", "password"]
+    },
+    
+    "authenticate":{
+      "$id": "#authenticate",
+      "title": "User authentication ",
+      "description": "verifies JWT token sent from front-end",
+      "type": "object",
+      "properties":{
+         "jwt":{
+          "description": "jwt token",
+          "type": "String"
+        }
+       },
+      }
+    
+    
+  }
+
+}

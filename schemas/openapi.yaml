@@ -1,0 +1,94 @@
+openapi: 3.0.0
+info:
+  version: 1.0.0
+  title: Web API Development Back End API - Trading Licenses Application.
+  description: Web Api for the purpose of Trading Licenses Applications.
+  contact:
+    name: Mohammed Guled
+    email: guledm2@coventry.ac.uk
+  license:
+    name: Apache 2.0
+    url: 'https://www.apache.org/licenses/LICENSE-2.0.html'
+servers:
+  - url: 'https://beast-ford-5000.codio-box.uk/api'
+    description: Development server
+tags:
+  - name: Users
+    description: API endpoints for user management.
+  - name: Licenses
+    description: Access and perform CRUD operations on the license applications.
+paths:
+  /users/register:
+    summary: Registering new user
+    description: >
+      This resources adds new document to the database regarding a new user.
+    post:
+      tags:
+        - Users
+      description:
+        Create a new user account.
+      requestBody:
+        description: New users data
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: ./users.json#/definitions/user
+      responses:
+        '201':
+          description: User created
+          content:
+            application/json:
+              schema:
+                $ref: ./users.json#/definitions/userregister      
+  /users/login:
+      summary: Signing in a user
+      description: >
+          This resources verifies a login request from the user.
+      post:
+        tags:
+          - Users
+        description:
+          Sign in user account
+        requestBody:
+          description: sign in data consisting of username and password
+          required: true
+          content:
+            application/json:
+              schema:
+                $ref: ./users.json#/definitions/usersignin
+        responses:
+          '201':
+            description: User Signed in 
+            content:
+              application/json:
+                schema:
+                  $ref: ./users.json#/definitions/usersigninconfirm
+  /users/authenticate:
+      summary: Authenticating a request from front-end via JWT Token
+      description: >
+          This resources checks the received JWT token against the secret.
+      post:
+        parameters:
+          - in: header
+            name: Authorisation
+            schema:
+              type: string
+        tags:
+          - Users
+        description:
+            Authenticate requests from front-end
+        requestBody:
+          description: jwt token received from front-end via header
+          required: true
+          content:
+            application/json:
+              schema:
+                $ref: ./users.json#/definitions/authenticate
+        responses:
+          '201':
+            description: JWT token verified
+            content:
+              application/json:
+                schema:
+                  type: boolean

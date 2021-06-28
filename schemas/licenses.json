@@ -1,0 +1,45 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "definitions": {
+    
+    "license":{
+      "$id": "#license",
+      "title": "License",
+      "description": "Data to view, add and edit license applications",
+      "type": "object",
+      "properties":{
+          "companyname": {
+            "description": "name of the company applying",
+            "type": "String"
+          },
+          "companytype": {
+            "description": "sector that the company is in",
+            "type": "String"
+          },
+          "address": {
+            "description": "address of the company",
+            "type": "String"
+          },
+          "status": {
+            "description": "status of the application. defaults to user. altered by admin",
+            "type": "String"
+          },
+          "details": {
+            "description": "further details that can be put in by the user",
+            "type": "String"
+          },
+          "user_id": {
+            "description": "the user logged in when application is made",
+            "type": "String"
+          },
+          "name":{
+            "description": "name of the specific user.",
+            "type": "String"
+          }
+      },
+      "required": ["companyname", "companytype", "address","status","details","user_id","name"]
+    }
+    
+    
+  }
+}
