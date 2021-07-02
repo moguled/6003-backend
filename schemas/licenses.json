@@ -38,7 +38,50 @@
           }
       },
       "required": ["companyname", "companytype", "address","status","details","user_id","name"]
-    }
+    },
+    
+    "errmsg":{
+      "$id": "#errmsg",
+      "title": "Error message returned",
+      "description": "returns a success message",
+      "type": "object",
+      "properties":{
+          "errmsg": {
+            "description": "success message string",
+            "type": "String"
+          }
+      }
+    },
+    
+    "licenseupdate":{
+      "$id": "#licenseupdate",
+      "title": "Updating license status property ",
+      "description": "updates status of licenses",
+      "type": "object",
+      "properties":{
+          "license_id": {
+            "description": "unique id for the specific licenses application object",
+            "type": "String"
+          },
+        "newstatus": {
+            "description": "status that the application is set to",
+            "type": "String"
+          }
+      }
+    },
+    
+    "licenseupdatesuccess":{
+      "$id": "#licenseupdatesuccess",
+      "title": "License Application update Successful",
+      "description": "success message for updated license status ",
+      "type": "object",
+      "properties":{
+          "msg": {
+            "description": "success message string",
+            "type": "String"
+          }
+      }
+    },
     
     
   }

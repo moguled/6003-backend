@@ -40,7 +40,19 @@ paths:
           content:
             application/json:
               schema:
-                $ref: ./users.json#/definitions/userregister      
+                $ref: ./users.json#/definitions/userregister
+        '400':
+            description: problem with form that is inputted or duplicate user
+            content:
+              application/json:
+                schema:
+                  $ref: ./licenses.json#/definitions/errmsg
+        '401':
+            description: cannot find registered users.
+            content:
+              application/json:
+                schema:
+                  $ref: ./licenses.json#/definitions/errmsg 
   /users/login:
       summary: Signing in a user
       description: >
@@ -64,6 +76,12 @@ paths:
               application/json:
                 schema:
                   $ref: ./users.json#/definitions/usersigninconfirm
+          '400':
+            description: Failed sign in
+            content:
+              application/json:
+                schema:
+                  $ref: ./licenses.json#/definitions/errmsg
   /users/authenticate:
       summary: Authenticating a request from front-end via JWT Token
       description: >
@@ -92,3 +110,106 @@ paths:
               application/json:
                 schema:
                   type: boolean
+          '400':
+            description: JWT verification failed
+            content:
+              application/json:
+                schema:
+                  "const": "false"
+          '500':
+            description: authentication failed
+            content:
+              application/json:
+                schema:
+                  $ref: ./licenses.json#/definitions/errmsg
+  /licenses:
+      summary: This route is for addition and retrieval of license applications from database.
+      description: >
+          This resource fetches all license documents and can also add a new one.
+      post:
+        parameters:
+          - in: header
+            name: Authorisation
+            schema:
+              type: string
+        tags:
+          - Licenses
+        description:
+            Adds new licenses application.
+        requestBody:
+          description: application form body received from front-end.
+          required: true
+          content:
+            application/json:
+              schema:
+                $ref: ./licenses.json#/definitions/license
+        responses:
+          '201':
+            description: successfully added to the database.
+            content:
+              application/json:
+                schema:
+                  $ref: ./licenses.json#/definitions/errmsg
+          '400':
+            description: failed to update status
+            content:
+              application/json:
+                schema:
+                  $ref: ./licenses.json#/definitions/errmsg 
+      get:
+        parameters:
+          - in: header
+            name: Authorisation
+            schema:
+              type: string
+        tags:
+          - Licenses
+        description:
+            Grabs license applications from database.
+        responses:
+          '201':
+            description: when successful, pulls the correct set of license app documents.
+            content:
+              application/json:
+                schema:
+                  $ref: ./licenses.json#/definitions/license
+          '400':
+            description: failed to grab licenses from database.
+            content:
+              application/json:
+                schema:
+                  $ref: ./licenses.json#/definitions/errmsg 
+  /licenses/update:
+      summary: This route is for updating license applications in the database
+      description: >
+          This resource updates status field of specified application document in mongodb database.
+      post:
+        parameters:
+          - in: header
+            name: Authorisation
+            schema:
+              type: string
+        tags:
+          - Licenses
+        description:
+            Updates status field for license application.
+        requestBody:
+          description: 
+          required: true
+          content:
+            application/json:
+              schema:
+                $ref: ./licenses.json#/definitions/licenseupdate
+        responses:
+          '200':
+            description: success message
+            content:
+              application/json:
+                schema:
+                  $ref: ./licenses.json#/definitions/licenseupdatesuccess
+          '400':
+            description: failed to update status
+            content:
+              application/json:
+                schema:
+                  $ref: ./licenses.json#/definitions/errmsg

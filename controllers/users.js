@@ -33,7 +33,25 @@ const addUser = asyncHandler(async (req, res) => {
     return res.status(400).json({"errmsg": "Password is empty" });
   }
   
-   
+  //checks password length
+  if (password.length < 6){
+    return res.status(400).json({"errmsg": "Password  too short" });
+  }
+  
+  //checks for number in password
+  if (password.search(/[0-9]/) == -1){
+    return res.status(400).json({"errmsg": "Password requires one number" });
+  }
+  
+  //checks for capital letter in password
+  if (password.search(/[A-Z]/) == -1){
+    return res.status(400).json({"errmsg": "Password requires one capital letter" });
+  }
+  
+  //checks for lower case letter in password
+  if (password.search(/[a-z]/) == -1){
+    return res.status(400).json({"errmsg": "Password requires at least one lower case letter" });
+  }
 
   //Hashes the password before user is created.
   password  = bcrypt.hashSync(password, 10);
