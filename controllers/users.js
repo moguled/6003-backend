@@ -84,7 +84,7 @@ const LoginUser = asyncHandler(async (req,res) => {
     const payload = {id: user._id, name: user.name, role:user.role}
     // token will carry payload which contains user information.
     const jwttoken = jwt.sign(payload, process.env.TOKEN_SECRET, {expiresIn:"1d"})
-    res.json({ 
+    res.status(200).json({ 
       _id: user._id,
       email: user.email,
       name: user.name,

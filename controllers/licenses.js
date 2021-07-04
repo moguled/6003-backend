@@ -72,27 +72,26 @@ const LicensesCtrl = {
       return res.status(400).json({"errmsg": err.message });
     }
   }),
-  
+  //funciton to let admin update status of applications
   updateLicenses: asyncHandler(async (req,res) => {
     try{
-      
+      //only allows admins to use to this function
       if(req.user.role=="admin"){
         const {license_id, newstatus} = req.body;
-
+        
+        // finds the specific document via license id and updates status
         await Licenses.findByIdAndUpdate(license_id ,{"status": newstatus}, function(err, result){
 
           if(err){
               console.log(err)
-             // res.send(err)
           }
           else{
               console.log(result)
-              //res.send(result)
           }
 
         })
-        return res.status(200).json({"msg": "success"});
-      }else{
+        return res.status(200).json({"msg": "success"}); //success message
+      }else{//when non admin tries to access this route
         return res.status(400).json({"errmsg": "This is not an admin account" });
       }
     }
