@@ -1,6 +1,8 @@
 # 6003-backend 
 
-# Welcome to my 6003CEM- Back End API Deferrel Project
+# MERN Stack: MONGODB, EXPRESS, REACT, NODE.JS.
+
+# Welcome to my 6003CEM- Back End API Deferrel Project.
 
 This is the back-end section of my Trading Licenses Application.
 
@@ -54,4 +56,12 @@ Tutorials used:
 - https://www.youtube.com/playlist?list=PLillGF-RfqbbiTGgA77tGO426V3hRF9iE
 - https://www.youtube.com/playlist?list=PLs4co9a6NhMzi2DQS_I4rqmNZdq-jSpsa 
 
+# Commands:
 
+# npm start
+
+- This starts the backend server.
+
+# npm test
+
+- This runs the tests for the backend.
