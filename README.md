@@ -2,7 +2,7 @@
 
 # MERN Stack: MONGODB, EXPRESS, REACT, NODE.JS.
 
-# Welcome to my 6003CEM- Back End API Deferrel Project.
+# Welcome to my 6003CEM- Back End API Project.
 
 This is the back-end section of my Trading Licenses Application.
 
